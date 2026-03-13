@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --navy:       #0B1F3A;
+    --cream:      #F7F3E9;
+    --gold:       #C9A54C;
+    --gold-light: #E2C47A;
+    --brown:      #5E4A3E;
+    --olive:      #7B8A6B;
+    --sand:       #E6D9C3;
+    --navy-dark:  #060f1d;
+    --navy-mid:   #0d1e35;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #F7F3E9;
+    color: #0B1F3A;
+    font-family: 'Lato', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+}
+
+@layer utilities {
+  .font-playfair { font-family: 'Playfair Display', serif; }
+  .font-cinzel   { font-family: 'Cinzel', serif; }
+  .font-lato     { font-family: 'Lato', sans-serif; }
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #C9A54C;
+  }
+}
