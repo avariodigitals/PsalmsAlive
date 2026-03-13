@@ -38,7 +38,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
             {/* Decorative panel */}
-            <div className="aspect-[4/5] bg-gradient-to-br from-navy via-[#122040] to-[#1a3560] flex items-center justify-center relative overflow-hidden sticky top-28">
+            <div className="aspect-[4/5] bg-gradient-to-br from-navy via-[#122040] to-[#1a3560] flex items-center justify-center relative overflow-hidden lg:sticky lg:top-28">
               <div className="absolute inset-4 border border-gold/20" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,165,76,0.08)_0%,transparent_65%)]" />
               <div className="relative text-center px-8">

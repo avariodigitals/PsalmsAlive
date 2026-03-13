@@ -40,7 +40,7 @@ export function Footer() {
             </Link>
             <p className="font-lato text-cream/40 text-sm leading-relaxed max-w-xs">
               A faith storytelling platform bringing the Book of Psalms to life through
-              dramatic visual storytelling. Created by Atley Adejola.
+              dramatic visual storytelling. Created by Avario Digitals.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export function Footer() {
 
         <div className="border-t border-cream/6 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-lato text-cream/25 text-xs">
-            © {new Date().getFullYear()} Psalms Alive · Created by Atley Adejola · All rights reserved.
+            © {new Date().getFullYear()} Psalms Alive · Created by Avario Digitals · All rights reserved.
           </p>
           <p className="font-cinzel text-gold/30 text-[0.6rem] tracking-[0.2em] uppercase">
             Where Scripture Meets Story
