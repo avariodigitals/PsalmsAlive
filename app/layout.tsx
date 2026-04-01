@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -73,8 +73,6 @@ export const metadata: Metadata = {
     },
   },
 
-  themeColor: '#0B1F3A',
-
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -89,6 +87,12 @@ export const metadata: Metadata = {
       { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' },
     ],
   },
+}
+
+export const generateViewport = (): Viewport => {
+  return {
+    themeColor: '#0B1F3A',
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
