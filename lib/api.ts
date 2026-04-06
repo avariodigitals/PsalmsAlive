@@ -126,7 +126,11 @@ export async function getEpisodeBySlug(slug: string): Promise<WPEpisode | null> 
           reflection
           videoUrl
           thumbnailGradient
-          thumbnailImage
+          thumbnailImage {
+            node {
+              sourceUrl
+            }
+          }
           featured
           latest
           publishStatus
@@ -184,7 +188,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 23', psalmNumber: 23, duration: '8 min',
       description: 'A story of trust and divine guidance in uncertain seasons. When David faced the valley of shadows, he did not face it alone.',
       reflection: 'Where are you placing your trust in this season? The Shepherd who led David is the same Shepherd walking with you today.',
-      videoUrl: '', thumbnailGradient: 'from-[#0f1a2e] to-[#0a1020]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#0f1a2e] to-[#0a1020]', thumbnailImage: null,
       featured: true, latest: true, publishStatus: 'published',
       seoTitle: "The Shepherd's Promise | Psalm 23 | Psalms Alive",
       seoDescription: "Watch The Shepherd's Promise — a visual story inspired by Psalm 23.",
@@ -196,7 +200,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 27', psalmNumber: 27, duration: '7 min',
       description: 'David cries out from a place of fear — surrounded by enemies, facing uncertainty. Yet he makes a bold declaration.',
       reflection: 'What are you afraid of today? The Lord is your light.',
-      videoUrl: '', thumbnailGradient: 'from-[#0d1a2a] to-[#1a2e45]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#0d1a2a] to-[#1a2e45]', thumbnailImage: null,
       featured: false, latest: false, publishStatus: 'published',
       seoTitle: 'Light in Darkness | Psalm 27 | Psalms Alive',
       seoDescription: 'Watch Light in Darkness — a visual story inspired by Psalm 27.',
@@ -208,7 +212,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 46', psalmNumber: 46, duration: '9 min',
       description: 'When the earth gives way and mountains fall into the sea, the sons of Korah declare one truth: God is our refuge.',
       reflection: 'In what area of your life do you need to be still and know that He is God?',
-      videoUrl: '', thumbnailGradient: 'from-[#111a0f] to-[#1e2d1a]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#111a0f] to-[#1e2d1a]', thumbnailImage: null,
       featured: false, latest: false, publishStatus: 'published',
       seoTitle: 'God Our Refuge | Psalm 46 | Psalms Alive',
       seoDescription: 'Watch God Our Refuge — a visual story inspired by Psalm 46.',
@@ -220,7 +224,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 91', psalmNumber: 91, duration: '10 min',
       description: 'A story of protection, presence, and the shelter only found in God.',
       reflection: 'Are you living under His shadow or trying to stand in your own strength?',
-      videoUrl: '', thumbnailGradient: 'from-[#1a1208] to-[#2a1e0c]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#1a1208] to-[#2a1e0c]', thumbnailImage: null,
       featured: false, latest: false, publishStatus: 'published',
       seoTitle: 'Under His Wings | Psalm 91 | Psalms Alive',
       seoDescription: 'Watch Under His Wings — a visual story inspired by Psalm 91.',
@@ -232,7 +236,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 121', psalmNumber: 121, duration: '6 min',
       description: 'A pilgrim lifts his eyes to the hills and asks the ancient question: where does my help come from?',
       reflection: 'Where do you look for help? Our help comes from the Lord.',
-      videoUrl: '', thumbnailGradient: 'from-[#0a1525] to-[#152540]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#0a1525] to-[#152540]', thumbnailImage: null,
       featured: false, latest: false, publishStatus: 'published',
       seoTitle: 'The Keeper of Israel | Psalm 121 | Psalms Alive',
       seoDescription: 'Watch The Keeper of Israel — a visual story inspired by Psalm 121.',
@@ -244,7 +248,7 @@ export const STATIC_EPISODES = [
       psalmReference: 'Psalm 139', psalmNumber: 139, duration: '8 min',
       description: 'Before a word is on your tongue, He knows it. Psalm 139 is the most intimate Psalm.',
       reflection: 'How does it change things to know that God sees you completely and still chooses you?',
-      videoUrl: '', thumbnailGradient: 'from-[#181010] to-[#2a1a1a]', thumbnailImage: '',
+      videoUrl: '', thumbnailGradient: 'from-[#181010] to-[#2a1a1a]', thumbnailImage: null,
       featured: false, latest: false, publishStatus: 'published',
       seoTitle: 'Known Completely | Psalm 139 | Psalms Alive',
       seoDescription: 'Watch Known Completely — a visual story inspired by Psalm 139.',

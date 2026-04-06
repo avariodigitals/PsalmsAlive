@@ -19,7 +19,7 @@ export async function Footer() {
     { label: 'Facebook', href: settings?.facebook || '#facebook' },
   ]
 
-  const email = settings?.email || 'hello@psalmsalive.com'
+  const email = settings?.email || 'info@psalmsalive.com'
   const tagline = settings?.tagline || 'Where Scripture Meets Story'
 
   return (

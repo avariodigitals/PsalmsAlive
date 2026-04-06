@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const settings = await getSiteSettings()
 
-  const email = settings?.email || 'hello@psalmsalive.com'
+  const email = settings?.email || 'info@psalmsalive.com'
 
   const socials = [
     {

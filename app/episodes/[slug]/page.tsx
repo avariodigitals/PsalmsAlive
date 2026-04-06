@@ -11,7 +11,7 @@ import type { Metadata } from 'next'
 export const revalidate = 60
 
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -20,7 +20,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const ep = await safeGetEpisodeBySlug(params.slug)
+  const { slug } = await params
+  const ep = await safeGetEpisodeBySlug(slug)
   if (!ep) return { title: 'Episode Not Found' }
   return {
     title: ep.episodeFields.seoTitle || `${ep.title} | ${ep.episodeFields.psalmReference}`,
@@ -29,11 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function EpisodePage({ params }: Props) {
-  const ep = await safeGetEpisodeBySlug(params.slug)
+  const { slug } = await params
+  const ep = await safeGetEpisodeBySlug(slug)
   if (!ep) notFound()
 
-  const thumbnailImage =
-    ep.episodeFields.thumbnailImage?.node?.sourceUrl || ''
+  const thumbnailImage = ep.episodeFields.thumbnailImage?.node?.sourceUrl || ''
 
   const episode = {
     id: ep.id,
@@ -57,7 +58,10 @@ export default async function EpisodePage({ params }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(201,165,76,0.08)_0%,transparent_60%)] pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 lg:px-8 relative">
           <SectionLabel>{episode.psalmReference}</SectionLabel>
-          <h1 className="font-playfair font-bold text-cream leading-snug mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+          <h1
+            className="font-playfair font-bold text-cream leading-snug mb-4"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+          >
             {episode.title}
           </h1>
           <GoldDivider />
@@ -85,7 +89,10 @@ export default async function EpisodePage({ params }: Props) {
       </section>
 
       {/* Reflection */}
-      <ReflectionSection reflection={episode.reflection} psalmReference={episode.psalmReference} />
+      <ReflectionSection
+        reflection={episode.reflection}
+        psalmReference={episode.psalmReference}
+      />
 
       {/* Share */}
       <ShareSection title={episode.title} slug={episode.slug} />
