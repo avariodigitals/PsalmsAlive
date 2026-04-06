@@ -1,7 +1,6 @@
 /**
- * Safe data fetcher
- * Returns WordPress data when CMS is connected,
-    * and falls back to static data when not connected or on fetch errors.
+ * WordPress Data Fetcher
+ * Fetches from WordPress GraphQL API with static fallback
  */
 
 import {
@@ -13,48 +12,45 @@ import {
   type WPEpisode,
 } from './api'
 
-const WP_CONNECTED = !!(
-  process.env.NEXT_PUBLIC_WP_GRAPHQL_URL &&
-  process.env.NEXT_PUBLIC_WP_GRAPHQL_URL !== 'https://cms.psalmsalive.com/graphql'
-)
-
+// WordPress is connected — fetch live data, fall back to static if unreachable
 export async function safeGetAllEpisodes(): Promise<WPEpisode[]> {
-  if (!WP_CONNECTED) return STATIC_EPISODES as unknown as WPEpisode[]
   try {
-    return await getAllEpisodes()
+    const episodes = await getAllEpisodes()
+    if (episodes && episodes.length > 0) return episodes
+    return STATIC_EPISODES as unknown as WPEpisode[]
   } catch {
-    console.warn('WordPress not reachable — using static episode data')
+    console.warn('WordPress GraphQL not reachable — using static data')
     return STATIC_EPISODES as unknown as WPEpisode[]
   }
 }
 
 export async function safeGetFeaturedEpisode(): Promise<WPEpisode | null> {
-  if (!WP_CONNECTED) {
+  try {
+    const episode = await getFeaturedEpisode()
+    if (episode) return episode
     return (STATIC_EPISODES.find((e) => e.episodeFields.featured) ??
       STATIC_EPISODES[0]) as unknown as WPEpisode
-  }
-  try {
-    return await getFeaturedEpisode()
   } catch {
-    return (STATIC_EPISODES[0] as unknown as WPEpisode)
+    return (STATIC_EPISODES.find((e) => e.episodeFields.featured) ??
+      STATIC_EPISODES[0]) as unknown as WPEpisode
   }
 }
 
 export async function safeGetEpisodeBySlug(slug: string): Promise<WPEpisode | null> {
-  if (!WP_CONNECTED) {
-    return (STATIC_EPISODES.find((e) => e.slug === slug) ?? null) as unknown as WPEpisode | null
-  }
   try {
-    return await getEpisodeBySlug(slug)
+    const episode = await getEpisodeBySlug(slug)
+    if (episode) return episode
+    return (STATIC_EPISODES.find((e) => e.slug === slug) ?? null) as unknown as WPEpisode | null
   } catch {
     return (STATIC_EPISODES.find((e) => e.slug === slug) ?? null) as unknown as WPEpisode | null
   }
 }
 
 export async function safeGetEpisodeSlugs(): Promise<string[]> {
-  if (!WP_CONNECTED) return STATIC_EPISODES.map((e) => e.slug)
   try {
-    return await getEpisodeSlugs()
+    const slugs = await getEpisodeSlugs()
+    if (slugs && slugs.length > 0) return slugs
+    return STATIC_EPISODES.map((e) => e.slug)
   } catch {
     return STATIC_EPISODES.map((e) => e.slug)
   }

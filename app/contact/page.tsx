@@ -1,21 +1,43 @@
 import { ContactForm } from '@/components/sections/ContactForm'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { GoldDivider } from '@/components/ui/GoldDivider'
+import { getSiteSettings } from '@/lib/api'
 import { Mail, Youtube, Instagram, Facebook } from 'lucide-react'
 import type { Metadata } from 'next'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
-  title: 'Contact – Psalms Alive',
+  title: 'Contact',
   description: 'Get in touch with the Psalms Alive community. Share your story, ask questions, or join the journey.',
 }
 
-const socials = [
-  { label: 'YouTube', icon: Youtube, href: '#', handle: '@PsalmsAlive' },
-  { label: 'Instagram', icon: Instagram, href: '#', handle: '@psalms.alive' },
-  { label: 'Facebook', icon: Facebook, href: '#', handle: 'Psalms Alive' },
-]
+export default async function ContactPage() {
+  const settings = await getSiteSettings()
 
-export default function ContactPage() {
+  const email = settings?.email || 'hello@psalmsalive.com'
+
+  const socials = [
+    {
+      label: 'YouTube',
+      icon: Youtube,
+      href: settings?.youtube || 'https://www.youtube.com/@psalmsalivemedia',
+      handle: '@psalmsalivemedia',
+    },
+    {
+      label: 'Instagram',
+      icon: Instagram,
+      href: settings?.instagram || 'https://www.instagram.com/psalmsalive',
+      handle: '@psalmsalive',
+    },
+    {
+      label: 'Facebook',
+      icon: Facebook,
+      href: settings?.facebook || '#facebook',
+      handle: 'Psalms Alive',
+    },
+  ]
+
   return (
     <>
       {/* Hero */}
@@ -52,8 +74,7 @@ export default function ContactPage() {
               <GoldDivider />
               <p className="font-lato text-brown text-sm leading-relaxed mb-8">
                 Psalms Alive is more than a platform — it is a community of people
-                walking through real life with scripture as their guide. Share your
-                thoughts, questions, or feedback with us.
+                walking through real life with scripture as their guide.
               </p>
 
               {/* Email */}
@@ -66,10 +87,10 @@ export default function ContactPage() {
                     Email Us
                   </p>
                   <a
-                    href="mailto:hello@psalmsalive.com"
+                    href={`mailto:${email}`}
                     className="font-lato text-brown text-sm hover:text-gold transition-colors duration-200"
                   >
-                    hello@psalmsalive.com
+                    {email}
                   </a>
                 </div>
               </div>

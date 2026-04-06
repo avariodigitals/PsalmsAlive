@@ -1,3 +1,4 @@
+import { getAboutContent } from '@/lib/api'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { GoldDivider } from '@/components/ui/GoldDivider'
 import { CTASection } from '@/components/sections/CTASection'
@@ -5,12 +6,36 @@ import { ScriptureQuote } from '@/components/sections/ScriptureQuote'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
-  title: 'About – Psalms Alive',
+  title: 'About',
   description: 'The story behind Psalms Alive, created by Atley Adejola to bring the Book of Psalms to life through visual storytelling.',
 }
 
-export default function AboutPage() {
+// Default content fallback
+const defaults = {
+  pageHeadline: 'The Story Behind Psalms Alive',
+  founderName: 'Atley Adejola',
+  founderBio: 'Psalms Alive was born from a simple yet profound vision by Atley Adejola — to make the Psalms easier to understand, relatable, and alive through visual storytelling.',
+  platformDescription: 'Through short dramatic video episodes and comic-style visual narratives, Psalms Alive presents scripture in a way that connects faith with everyday life.',
+  visionText: 'Psalms Alive is more than a video series. It is a faith journey — a growing library of visual devotionals and dramatic interpretations designed to help people see how God\'s word speaks to their personal experiences.',
+  scriptureQuote: "He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake.",
+  scriptureReference: 'Psalm 23:3',
+}
+
+export default async function AboutPage() {
+  const content = await getAboutContent()
+  const c = {
+    pageHeadline: content?.pageHeadline || defaults.pageHeadline,
+    founderName: content?.founderName || defaults.founderName,
+    founderBio: content?.founderBio || defaults.founderBio,
+    platformDescription: content?.platformDescription || defaults.platformDescription,
+    visionText: content?.visionText || defaults.visionText,
+    scriptureQuote: content?.scriptureQuote || defaults.scriptureQuote,
+    scriptureReference: content?.scriptureReference || defaults.scriptureReference,
+  }
+
   return (
     <>
       {/* Hero */}
@@ -18,17 +43,17 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(201,165,76,0.06)_0%,transparent_60%)] pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative">
           <SectionLabel className="text-center block">Our Story</SectionLabel>
-          <h1
-            className="font-playfair font-bold text-cream leading-snug"
-            style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
-          >
-            The Story Behind{' '}
-            <em className="italic text-gold">Psalms Alive</em>
+          <h1 className="font-playfair font-bold text-cream leading-snug" style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}>
+            {c.pageHeadline.includes('Psalms Alive') ? (
+              <>
+                {c.pageHeadline.replace('Psalms Alive', '').trim()}{' '}
+                <em className="italic text-gold">Psalms Alive</em>
+              </>
+            ) : c.pageHeadline}
           </h1>
           <GoldDivider className="mx-auto" />
           <p className="font-lato text-cream/60 text-lg max-w-2xl mx-auto leading-relaxed">
-            A platform born from a simple vision — to make the Psalms easier to understand,
-            relatable, and alive through visual storytelling.
+            A platform born from a simple vision — to make the Psalms easier to understand, relatable, and alive through visual storytelling.
           </p>
         </div>
       </section>
@@ -43,19 +68,11 @@ export default function AboutPage() {
               <div className="absolute inset-4 border border-gold/20" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,165,76,0.08)_0%,transparent_65%)]" />
               <div className="relative text-center px-8">
-                <Image
-                  src="/logo.png"
-                  alt="Psalms Alive"
-                  width={180}
-                  height={64}
-                  className="h-16 w-auto mx-auto mb-6 opacity-60"
-                />
+                <Image src="/logo.png" alt="Psalms Alive" width={180} height={64} className="h-16 w-auto mx-auto mb-6 opacity-60" />
                 <p className="font-playfair italic text-gold/40 text-sm leading-relaxed">
                   &ldquo;Thy word is a lamp unto my feet, and a light unto my path.&rdquo;
                 </p>
-                <span className="font-cinzel text-gold/25 text-[0.58rem] tracking-[0.2em] uppercase mt-3 block">
-                  Psalm 119:105
-                </span>
+                <span className="font-cinzel text-gold/25 text-[0.58rem] tracking-[0.2em] uppercase mt-3 block">Psalm 119:105</span>
               </div>
             </div>
 
@@ -63,64 +80,31 @@ export default function AboutPage() {
             <div className="flex flex-col gap-6">
               <div>
                 <SectionLabel>The Founder</SectionLabel>
-                <h2 className="font-playfair font-semibold text-navy text-3xl mb-4">
-                  Atley Adejola
-                </h2>
+                <h2 className="font-playfair font-semibold text-navy text-3xl mb-4">{c.founderName}</h2>
                 <GoldDivider />
-                <p className="font-lato text-brown leading-relaxed mb-4">
-                  Psalms Alive was born from a simple yet profound vision by Atley Adejola — to make
-                  the Psalms easier to understand, relatable, and alive through visual storytelling.
-                </p>
+                <p className="font-lato text-brown leading-relaxed mb-4">{c.founderBio}</p>
                 <p className="font-lato text-brown leading-relaxed">
-                  The Book of Psalms captures the full range of human emotions in raw, honest
-                  conversation with God. Joy and sorrow. Faith and fear. Gratitude and lament.
-                  These ancient words have comforted generations across thousands of years — and
-                  Atley believed they could come alive in a new way for a new generation.
+                  The Book of Psalms captures the full range of human emotions in raw, honest conversation with God. Joy and sorrow. Faith and fear. Gratitude and lament. These ancient words have comforted generations across thousands of years — and {c.founderName.split(' ')[0]} believed they could come alive in a new way for a new generation.
                 </p>
               </div>
-
               <div>
                 <SectionLabel>The Platform</SectionLabel>
-                <h2 className="font-playfair font-semibold text-navy text-2xl mb-4">
-                  Where Scripture Meets Story
-                </h2>
+                <h2 className="font-playfair font-semibold text-navy text-2xl mb-4">Where Scripture Meets Story</h2>
                 <GoldDivider />
-                <p className="font-lato text-brown leading-relaxed mb-4">
-                  Through short dramatic video episodes and comic-style visual narratives,
-                  Psalms Alive presents scripture in a way that connects faith with everyday life.
-                  Each episode explores a different Psalm — its historical context, its emotional
-                  depth, and its personal application.
-                </p>
-                <p className="font-lato text-brown leading-relaxed">
-                  The platform is designed to be a peaceful digital sanctuary — a place where
-                  people can watch, reflect, and grow spiritually, wherever they are in their
-                  faith journey.
-                </p>
+                <p className="font-lato text-brown leading-relaxed">{c.platformDescription}</p>
               </div>
-
               <div>
                 <SectionLabel>The Vision</SectionLabel>
-                <h2 className="font-playfair font-semibold text-navy text-2xl mb-4">
-                  More Than a Series
-                </h2>
+                <h2 className="font-playfair font-semibold text-navy text-2xl mb-4">More Than a Series</h2>
                 <GoldDivider />
-                <p className="font-lato text-brown leading-relaxed">
-                  Psalms Alive is more than a video series. It is a faith journey. A growing
-                  library of visual devotionals, dramatic interpretations, and scripture-inspired
-                  reflections — all designed to help people see how God&apos;s word speaks
-                  directly to their personal experiences, emotions, and seasons of life.
-                </p>
+                <p className="font-lato text-brown leading-relaxed">{c.visionText}</p>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      <ScriptureQuote
-        quote="He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake."
-        reference="Psalm 23:3"
-      />
+      <ScriptureQuote quote={c.scriptureQuote} reference={c.scriptureReference} />
       <CTASection />
     </>
   )
