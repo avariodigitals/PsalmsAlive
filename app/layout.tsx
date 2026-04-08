@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
-const siteUrl = 'https://psalms-alive.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://psalmsalive.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: '/og-image.jpg',
+        url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: 'Psalms Alive – Where Scripture Meets Story',
@@ -59,7 +60,7 @@ export const metadata: Metadata = {
     description:
       'Experience the Psalms through powerful visual storytelling. Short dramatic episodes that connect scripture with everyday life.',
     site: '@psalmsalive',
-    images: ['/og-image.jpg'],
+    images: [`${siteUrl}/og-image.jpg`],
   },
 
   robots: {
@@ -79,9 +80,7 @@ export const metadata: Metadata = {
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
-    apple: [
-      { url: '/apple-touch-icon.png' },
-    ],
+    apple: [{ url: '/apple-touch-icon.png' }],
     other: [
       { rel: 'android-chrome-192x192', url: '/android-chrome-192x192.png' },
       { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' },
@@ -96,12 +95,32 @@ export const generateViewport = (): Viewport => {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+
+        {gaId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   )

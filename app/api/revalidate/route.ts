@@ -7,13 +7,12 @@
  * "WP Webhooks" to POST to this URL on post save/publish.
  */
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret')
 
-  // Validate secret token
   if (secret !== process.env.REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
@@ -22,20 +21,21 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}))
     const { type, slug } = body
 
-    // Revalidate based on content type
     if (type === 'episode' && slug) {
       revalidatePath(`/episodes/${slug}`)
       revalidatePath('/episodes')
       revalidatePath('/')
+      revalidatePath('/sitemap.xml')
     } else if (type === 'settings') {
       revalidatePath('/', 'layout')
+      revalidatePath('/sitemap.xml')
     } else {
-      // Revalidate everything
       revalidatePath('/')
       revalidatePath('/episodes')
       revalidatePath('/about')
       revalidatePath('/faith-journey')
       revalidatePath('/contact')
+      revalidatePath('/sitemap.xml')
     }
 
     return NextResponse.json({
@@ -51,11 +51,15 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Health check
 export async function GET(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret')
+
   if (secret !== process.env.REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
-  return NextResponse.json({ status: 'ok', timestamp: new Date().toISOString() })
+
+  return NextResponse.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  })
 }
