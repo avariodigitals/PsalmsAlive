@@ -8,7 +8,7 @@ import { CTASection } from '@/components/sections/CTASection'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
-export const revalidate = 60
+export const revalidate = 0
 
 interface Props {
   params: Promise<{ slug: string }>

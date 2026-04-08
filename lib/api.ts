@@ -89,12 +89,6 @@ const EPISODE_FIELDS = `
       altText
     }
   }
-  psalmCategories {
-    nodes {
-      name
-      slug
-    }
-  }
   episodeFields {
     psalmReference
     psalmNumber
@@ -128,10 +122,8 @@ export async function getAllEpisodes(): Promise<WPEpisode[]> {
       }
     }
   `)
-  // Return all published episodes
-  return data.episodes.nodes.filter(
-    (ep) => ep.episodeFields?.publishStatus === 'published'
-  )
+  // WordPress only returns published posts by default — no extra filter needed
+  return data.episodes.nodes
 }
 
 export async function getFeaturedEpisode(): Promise<WPEpisode | null> {
@@ -239,59 +231,80 @@ export interface WPFaithJourneyContent {
 
 export async function getHomepageContent(): Promise<WPHomepageContent | null> {
   try {
-    const data = await fetchAPI<{ pages: { nodes: Array<{ homepageFields: WPHomepageContent }> } }>(`
-      query GetHomepage {
-        pages(where: { title: "Home" }) {
-          nodes {
-            homepageFields {
-              heroHeadline heroSubheadline heroButtonText
-              visionHeadline visionBody ctaHeadline ctaSubtext
-              scriptureQuote scriptureReference
+    const res = await fetch(WP_GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `query GetHomepage {
+          pages(where: { title: "Home" }) {
+            nodes {
+              homepageFields {
+                heroHeadline heroSubheadline heroButtonText
+                visionHeadline visionBody ctaHeadline ctaSubtext
+                scriptureQuote scriptureReference
+              }
             }
           }
-        }
-      }
-    `)
-    return data.pages.nodes[0]?.homepageFields ?? null
+        }`
+      }),
+      cache: 'no-store',
+    })
+    const json = await res.json()
+    if (json.errors || !json.data) return null
+    return json.data.pages?.nodes?.[0]?.homepageFields ?? null
   } catch { return null }
 }
 
 export async function getAboutContent(): Promise<WPAboutContent | null> {
   try {
-    const data = await fetchAPI<{ pages: { nodes: Array<{ aboutFields: WPAboutContent }> } }>(`
-      query GetAbout {
-        pages(where: { title: "About" }) {
-          nodes {
-            aboutFields {
-              pageHeadline founderName founderBio
-              platformDescription visionText
-              scriptureQuote scriptureReference
+    const res = await fetch(WP_GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `query GetAbout {
+          pages(where: { title: "About" }) {
+            nodes {
+              aboutFields {
+                pageHeadline founderName founderBio
+                platformDescription visionText
+                scriptureQuote scriptureReference
+              }
             }
           }
-        }
-      }
-    `)
-    return data.pages.nodes[0]?.aboutFields ?? null
+        }`
+      }),
+      cache: 'no-store',
+    })
+    const json = await res.json()
+    if (json.errors || !json.data) return null
+    return json.data.pages?.nodes?.[0]?.aboutFields ?? null
   } catch { return null }
 }
 
 export async function getFaithJourneyContent(): Promise<WPFaithJourneyContent | null> {
   try {
-    const data = await fetchAPI<{ pages: { nodes: Array<{ faithJourneyFields: WPFaithJourneyContent }> } }>(`
-      query GetFaithJourney {
-        pages(where: { title: "Faith Journey" }) {
-          nodes {
-            faithJourneyFields {
-              pageHeadline introText
-              hopeTitle hopeText
-              reflectionTitle reflectionText
-              communityTitle communityText
+    const res = await fetch(WP_GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `query GetFaithJourney {
+          pages(where: { title: "Faith Journey" }) {
+            nodes {
+              faithJourneyFields {
+                pageHeadline introText
+                hopeTitle hopeText
+                reflectionTitle reflectionText
+                communityTitle communityText
+              }
             }
           }
-        }
-      }
-    `)
-    return data.pages.nodes[0]?.faithJourneyFields ?? null
+        }`
+      }),
+      cache: 'no-store',
+    })
+    const json = await res.json()
+    if (json.errors || !json.data) return null
+    return json.data.pages?.nodes?.[0]?.faithJourneyFields ?? null
   } catch { return null }
 }
 

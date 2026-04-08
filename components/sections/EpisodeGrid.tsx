@@ -159,15 +159,16 @@ function EpisodeCard({ episode }: { episode: EpisodeCardData }) {
       <div
         className={`relative aspect-video bg-gradient-to-br ${episode.thumbnailGradient} overflow-hidden`}
       >
-        {thumbnailSrc ? (
+        {thumbnailSrc && (
           <Image
             src={thumbnailSrc}
             alt={episode.title}
             fill
-            className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+            className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            unoptimized={thumbnailSrc.includes('cms.psalmsalive.com')}
           />
-        ) : null}
+        )}
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />

@@ -8,7 +8,7 @@ import { FaithJourneySection } from '@/components/sections/FaithJourneySection'
 import { CTASection } from '@/components/sections/CTASection'
 import Link from 'next/link'
 
-export const revalidate = 60
+export const revalidate = 0
 
 function mapEpisode(ep: Awaited<ReturnType<typeof safeGetAllEpisodes>>[0]) {
   return {

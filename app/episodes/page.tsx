@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Browse all Psalms Alive episodes — short dramatic video stories inspired by the Book of Psalms.',
 }
 
-export const revalidate = 60
+export const revalidate = 0
 
 export default async function EpisodesPage() {
   const episodes = await safeGetAllEpisodes()
