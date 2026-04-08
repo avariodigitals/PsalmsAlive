@@ -31,12 +31,11 @@ export function EpisodeGrid({ episodes, showFilter = true, limit }: Props) {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  // Get unique categories from episodes
+  // Get unique categories from psalm taxonomy
   const categories = useMemo(() => {
     const cats = new Set<string>()
     episodes.forEach((ep) => {
       if (ep.category) cats.add(ep.category)
-      else if (ep.psalmReference) cats.add(ep.psalmReference)
     })
     return Array.from(cats).sort((a, b) => {
       const numA = parseInt(a.replace(/\D/g, ''))
@@ -45,16 +44,12 @@ export function EpisodeGrid({ episodes, showFilter = true, limit }: Props) {
     })
   }, [episodes])
 
-  // Filter episodes
+  // Filter episodes by psalm category and/or search
   const filtered = useMemo(() => {
     let result = episodes
 
     if (selectedCategory !== 'all') {
-      result = result.filter(
-        (ep) =>
-          ep.category === selectedCategory ||
-          ep.psalmReference === selectedCategory
-      )
+      result = result.filter((ep) => ep.category === selectedCategory)
     }
 
     if (search.trim()) {
@@ -63,7 +58,8 @@ export function EpisodeGrid({ episodes, showFilter = true, limit }: Props) {
         (ep) =>
           ep.title.toLowerCase().includes(q) ||
           ep.psalmReference.toLowerCase().includes(q) ||
-          ep.description.toLowerCase().includes(q)
+          ep.description.toLowerCase().includes(q) ||
+          (ep.category && ep.category.toLowerCase().includes(q))
       )
     }
 

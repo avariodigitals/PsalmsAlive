@@ -89,6 +89,12 @@ const EPISODE_FIELDS = `
       altText
     }
   }
+  psalmCategories {
+    nodes {
+      name
+      slug
+    }
+  }
   episodeFields {
     psalmReference
     psalmNumber

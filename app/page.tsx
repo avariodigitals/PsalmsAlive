@@ -24,7 +24,7 @@ function mapEpisode(ep: Awaited<ReturnType<typeof safeGetAllEpisodes>>[0]) {
     thumbnailImage: ep.featuredImage?.node?.sourceUrl || ep.episodeFields.thumbnailImage?.node?.sourceUrl || '',
     duration: ep.episodeFields.duration,
     featured: ep.episodeFields.featured,
-    category: ep.psalmCategories?.nodes?.[0]?.name || ep.episodeFields.psalmReference,
+    category: ep.psalmCategories?.nodes?.[0]?.name || '',
   }
 }
 
